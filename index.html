@@ -232,6 +232,26 @@
             100% { transform: rotate(360deg); }
         }
         
+        .alternative-method {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .alternative-method a {
+            color: #4CAF50;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .alternative-method a:hover {
+            text-decoration: underline;
+        }
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.2rem;
@@ -327,28 +347,13 @@
     <div class="error-message" id="errorMessage">
         <h2>Ошибка отправки</h2>
         <p>Произошла ошибка при отправке данных. Пожалуйста, попробуйте еще раз.</p>
+        <p>Если проблема сохраняется, воспользуйтесь <a href="#" id="directLink">прямой ссылкой на форму</a>.</p>
     </div>
     
-    <div class="instructions">
-        <h2>Как это работает?</h2>
-        <div class="instructions-content">
-            <div class="instruction-block">
-                <h3>1. Заполните форму</h3>
-                <p>Все данные отправляются автоматически без перехода на другие страницы.</p>
-            </div>
-            <div class="instruction-block">
-                <h3>2. Данные сохраняются</h3>
-                <p>Все ответы автоматически сохраняются в Google Таблице, доступной организаторам.</p>
-            </div>
-            <div class="instruction-block">
-                <h3>3. Подтверждение</h3>
-                <p>Организаторы свяжутся с вами через Telegram для уточнения деталей.</p>
-            </div>
-            <div class="instruction-block">
-                <h3>4. Подготовка к сплаву</h3>
-                <p>Вы получите список необходимого снаряжения и информацию о месте сбора.</p>
-            </div>
-        </div>
+    <div class="alternative-method">
+        <h3>Альтернативный способ регистрации</h3>
+        <p>Если форма выше не работает, вы можете зарегистрироваться непосредственно через Google Forms:</p>
+        <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfM5wKuCOL7nBRXKAVql4GPa-1Or-uFu7Zq3yN3xk52psZUsQ/viewform?usp=sf_link" target="_blank">Перейти к форме регистрации</a></p>
     </div>
 
     <script>
@@ -381,24 +386,29 @@
                 formData.append('entry.1065046570', dateSelected.value);
                 formData.append('entry.839337160', comment);
                 
-                // Отправляем данные в Google Forms
-                const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSfM5wKuCOL7nBRXKAVql4GPa-1Or-uFu7Zq3yN3xk52psZUsQ/formResponse', {
+                // Отправляем данные в Google Forms через прокси
+                const response = await fetch('https://corsproxy.io/?https://docs.google.com/forms/d/e/1FAIpQLSfM5wKuCOL7nBRXKAVql4GPa-1Or-uFu7Zq3yN3xk52psZUsQ/formResponse', {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'cors',
                     body: formData
                 });
                 
                 // Скрываем индикатор загрузки
                 document.getElementById('loading').style.display = 'none';
                 
-                // Показываем сообщение об успехе
-                document.getElementById('successMessage').style.display = 'block';
-                
-                // Плавно прокручиваем к сообщению об успехе
-                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
-                
-                // Очищаем форму
-                this.reset();
+                // Проверяем статус ответа
+                if (response.status === 0 || response.ok) {
+                    // Показываем сообщение об успехе
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Плавно прокручиваем к сообщению об успехе
+                    document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Очищаем форму
+                    this.reset();
+                } else {
+                    throw new Error('Ошибка сервера: ' + response.status);
+                }
                 
             } catch (error) {
                 // Скрываем индикатор загрузки
@@ -407,6 +417,10 @@
                 // Показываем сообщение об ошибке
                 document.getElementById('errorMessage').style.display = 'block';
                 document.getElementById('errorMessage').scrollIntoView({ behavior: 'smooth' });
+                
+                // Формируем прямую ссылку с заполненными данными
+                const directLink = `https://docs.google.com/forms/d/e/1FAIpQLSfM5wKuCOL7nBRXKAVql4GPa-1Or-uFu7Zq3yN3xk52psZUsQ/viewform?usp=pp_url&entry.2005620554=${encodeURIComponent(callsign)}&entry.1045781291=${encodeURIComponent('https://t.me/' + telegram)}&entry.1166974658=${participations}&entry.1065046570=${encodeURIComponent(dateSelected.value)}&entry.839337160=${encodeURIComponent(comment)}`;
+                document.getElementById('directLink').href = directLink;
                 
                 console.error('Ошибка при отправке формы:', error);
             }
