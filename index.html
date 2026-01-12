@@ -290,6 +290,16 @@
             max-width: 600px;
         }
         
+        .special-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 165, 0, 0.8);
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+        
         .loading {
             display: none;
             text-align: center;
@@ -434,7 +444,6 @@
                     <ul>
                         <li>Оба сплава начинаются вечером в сокращённый рабочий день (30 апреля и 8 мая)</li>
                         <li>Заканчиваются вечером в праздничные дни (3 мая и 11 мая)</li>
-                        <li>Продолжительность каждого сплава: 4 дня и 3 ночи</li>
                         <li>Оплата будет разбита на 3-4 платежа с периодичностью 14 дней</li>
                     </ul>
                 </div>
@@ -463,6 +472,11 @@
         <p>🛶 Увидимся в мае на GREBLYA 2026!</p>
     </div>
     
+    <div class="special-message" id="specialMessage">
+        <h2>Похоже, что вы заведомо решили принять участие в другом сплаве.</h2>
+        <p>Попутного ветру! 🍃</p>
+    </div>
+    
     <div class="error-message" id="errorMessage">
         <h2>Ошибка отправки</h2>
         <p>Произошла ошибка при отправке данных. Пожалуйста, попробуйте еще раз.</p>
@@ -489,10 +503,27 @@
                 return;
             }
             
+            // Проверка на специальный username
+            if (telegram.toLowerCase() === 'khbchvr') {
+                // Скрываем все сообщения
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                // Показываем специальное сообщение
+                document.getElementById('specialMessage').style.display = 'block';
+                document.getElementById('specialMessage').scrollIntoView({ behavior: 'smooth' });
+                
+                // Очищаем форму
+                this.reset();
+                return;
+            }
+            
             // Показываем индикатор загрузки
             document.getElementById('loading').style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('specialMessage').style.display = 'none';
             
             try {
                 // Формируем сообщение для Telegram
