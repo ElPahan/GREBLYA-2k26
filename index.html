@@ -78,6 +78,13 @@
             color: #4CAF50;
         }
         
+        .hint {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
         input, textarea {
             width: 100%;
             padding: 12px;
@@ -135,6 +142,79 @@
         .date-option input {
             width: auto;
             margin-right: 10px;
+        }
+        
+        /* Новая секция с наглядным представлением дат сплавов */
+        .rafting-dates {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .dates-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .date-block {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            background: rgba(255, 165, 0, 0.2);
+            border: 2px solid rgba(255, 165, 0, 0.5);
+        }
+        
+        .date-block h3 {
+            color: #FFA500;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .date-period {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 10px 0;
+        }
+        
+        .date-days {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .date-note {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #ffcc00;
+            font-style: italic;
+        }
+        
+        .rafting-note {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .rafting-note h4 {
+            color: #4CAF50;
+            margin-bottom: 8px;
+        }
+        
+        .rafting-note ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .rafting-note li {
+            margin-bottom: 5px;
         }
         
         button {
@@ -247,8 +327,20 @@
                 font-size: 2.2rem;
             }
             
+            .container {
+                padding: 20px;
+            }
+            
             .instruction-block {
                 flex-basis: 100%;
+            }
+            
+            .dates-container {
+                flex-direction: column;
+            }
+            
+            .date-block {
+                min-width: 100%;
             }
             
             .telegram-input {
@@ -290,6 +382,7 @@
                     <span class="telegram-prefix">https://t.me/</span>
                     <input type="text" id="telegram" required placeholder="username">
                 </div>
+                <p class="hint">Как найти свой username: откройте Telegram → Настройки → Username. Если нет username, укажите номер телефона в формате +79123456789</p>
             </div>
             
             <!-- Поле для количества участий -->
@@ -310,6 +403,40 @@
                         <input type="radio" name="date" value="8 мая вечер - 11 мая вечер">
                         8 мая вечер - 11 мая вечер
                     </label>
+                    <label class="date-option">
+                        <input type="radio" name="date" value="Устраивают обе даты">
+                        Устраивают обе даты
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Наглядное представление дат сплавов -->
+            <div class="rafting-dates">
+                <h3>Даты запланированных сплавов:</h3>
+                <div class="dates-container">
+                    <div class="date-block">
+                        <h3>Первый сплав</h3>
+                        <div class="date-period">30 Апреля - 3 Мая</div>
+                        <div class="date-days">4 дня / 3 ночи</div>
+                        <div class="date-note">30 апреля - сокращённый рабочий день</div>
+                    </div>
+                    
+                    <div class="date-block">
+                        <h3>Второй сплав</h3>
+                        <div class="date-period">8 - 11 Мая</div>
+                        <div class="date-days">4 дня / 3 ночи</div>
+                        <div class="date-note">8 мая - сокращённый рабочий день</div>
+                    </div>
+                </div>
+                
+                <div class="rafting-note">
+                    <h4>📅 Важно:</h4>
+                    <ul>
+                        <li>Оба сплава начинаются вечером в сокращённый рабочий день (30 апреля и 8 мая)</li>
+                        <li>Заканчиваются вечером в праздничные дни (3 мая и 11 мая)</li>
+                        <li>Продолжительность каждого сплава: 4 дня и 3 ночи</li>
+                        <li>Оплата будет разбита на 3-4 платежа с периодичностью 14 дней</li>
+                    </ul>
                 </div>
             </div>
             
@@ -426,4 +553,3 @@ _Отправлено с сайта https://elpahan.github.io/GREBLYA-2k26/_
     </script>
 </body>
 </html>
-
